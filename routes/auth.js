@@ -1,7 +1,7 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const User = require('../models/User'); // Fixed import
+const User = require('../models/user');
 const router = express.Router();
 
 // Middleware for authenticating JWT tokens
