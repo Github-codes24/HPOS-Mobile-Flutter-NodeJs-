@@ -27,6 +27,7 @@ const createPatient = async (req, res) => {
     // personalName,
     // abhaNumber,
     // aadhaarNumber,
+    personalName, aadhaarNumber, number,
     birthYear,
     gender,
     mobileNumber,

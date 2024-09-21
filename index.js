@@ -36,7 +36,7 @@ const authRoutes = require('./routes/auth');
 const sightDetailRoutes = require('./routes/sightDetailRoutes');
 
 // Use routes
-app.use("/api/patients", patientRoutes);
+app.use("/api/sickleCellPatients", patientRoutes);
 app.use("/api/data", dataRoutes);
 app.use("/api/breastdata", breastdataRoutes);
 app.use("/api/breastpatients", breastpatientRoutes);
