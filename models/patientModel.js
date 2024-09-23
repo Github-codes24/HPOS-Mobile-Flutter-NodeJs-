@@ -63,6 +63,7 @@ const patientSchema = new mongoose.Schema({
   isUnderMedication: { type: Boolean, required: true },
   isUnderBloodTransfusion: { type: Boolean, required: true },
   familyHistory: { type: Boolean, required: true },
+  UID: { type: String },
 });
 
 const Patient = mongoose.model("Patient", patientSchema);
