@@ -39,6 +39,7 @@ const patientSchema = new mongoose.Schema({
   // personalName: { type: String, required: true },
   // abhaNumber: { type: String, required: true, unique: true },
   // aadhaarNumber: { type: String, required: true, unique: true },
+  userImage: String,
   personalName: { type: String, required: true },
   aadhaarNumber: { type: String, required: true, unique: true }, // Assuming Aadhaar number is unique
   number: { type: Number, required: true },

@@ -76,6 +76,8 @@
 
 const Patient = require("../models/patientModel");
 
+const cloudinary = require('../config/cloudinary');
+
 // POST: Create new patient record
 const createPatient = async (req, res) => {
   const {
@@ -99,11 +101,24 @@ const createPatient = async (req, res) => {
     familyHistory,
   } = req.body;
 
+  const { userImage } = req.files;
+
+  let userImageFile;
+        
+  if (userImage) {
+    userImageFile = await cloudinary(userImage[0].buffer);
+  };
+
+  await Promise.allSettled([
+    userImageFile
+  ]);
+
   const newPatient = new Patient({
     // personalName,
     // abhaNumber,
     // aadhaarNumber,
     personalName, aadhaarNumber, number,
+    userImage: userImageFile?.secure_url,
     birthYear,
     gender,
     mobileNumber,
