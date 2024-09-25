@@ -25,9 +25,48 @@ async function seedDatabase() {
         console.log('No users found. Seeding users...');
 
         const users = [
-            { userid: 'testuser1', password: 'password123', employeName: 'John Doe', centerName: 'Nagpur' },
-            { userid: 'testuser2', password: 'password456', employeName: 'Jane Smith', centerName: 'Pune' },
-            { userid: 'testuser3', password: 'password789', employeName: 'Alice Johnson', centerName: 'Mumbai' }
+            { userid: 'UNI001', password: 'password123', employeName: 'Aachal L. Varma', centerName: 'Nagpur' },
+            { userid: 'UNI002', password: 'password123', employeName: 'Ashwini K. Saratkar', centerName: 'Pune' },
+            { userid: 'UNI004', password: 'password123', employeName: 'Ashwini J. Shendre', centerName: 'Mumbai' },
+            { "userid": "UNI005", "password": "password123", "employeName": "Shraddha M. Bhalme", "centerName": "Delhi" },
+            { "userid": "UNI007", "password": "password123", "employeName": "Nazmeen W. Khan", "centerName": "Bangalore" },
+            { "userid": "UNI013", "password": "password123", "employeName": "Samiksha H. Badwaik", "centerName": "Chennai" },
+            { "userid": "UNI017", "password": "password123", "employeName": "Nisha D. Bawankar", "centerName": "Kolkata" },
+            { "userid": "UNI021", "password": "password123", "employeName": "Megha S. Godghate", "centerName": "Hyderabad" },
+            { "userid": "UNI023", "password": "password123", "employeName": "Dipali K. Shinde", "centerName": "Ahmedabad" },
+            { "userid": "UNI024", "password": "password123", "employeName": "Juhi S. khobragade", "centerName": "Surat" },
+            { "userid": "UNI027", "password": "password123", "employeName": "Ishika N. Fadtare", "centerName": "Jaipur" },
+            { "userid": "UNI028", "password": "password123", "employeName": "Monali D. Ghodmare", "centerName": "Lucknow" },
+            { "userid": "UNI030", "password": "password123", "employeName": "Saylee D. Ghatole", "centerName": "Kanpur" },
+            { "userid": "UNI032", "password": "password123", "employeName": "Megha Y. Bansod", "centerName": "Nagpur" },
+            { "userid": "UNI033", "password": "password123", "employeName": "Prachi S. Kuthe", "centerName": "Pune" },
+
+            { "userid": "UNI034", "password": "password123", "employeName": "Astha R. Mendhe", "centerName": "Mumbai" },
+            { "userid": "UNI035", "password": "password123", "employeName": "Pratikhsha A. Kathane", "centerName": "Delhi" },
+            { "userid": "UNI036", "password": "password123", "employeName": "Neha C. Yelekar", "centerName": "Bangalore" },
+            { "userid": "UNI037", "password": "password123", "employeName": "Damini U. Dhumankhede", "centerName": "Chennai" },
+            { "userid": "UNI038", "password": "password123", "employeName": "Snehal Talmale", "centerName": "Kolkata" },
+            { "userid": "UNI044", "password": "password123", "employeName": "Bhagyashri Bhutekar", "centerName": "Hyderabad" },
+            { "userid": "UNI045", "password": "password123", "employeName": "Manisha Raut", "centerName": "Ahmedabad" },
+            { "userid": "UNI046", "password": "password123", "employeName": "Pallavi Surywanshi", "centerName": "Surat" },
+            { "userid": "UNI047", "password": "password123", "employeName": "Payal Hatwar", "centerName": "Jaipur" },
+            { "userid": "UNI048", "password": "password123", "employeName": "Pooja Choudhari", "centerName": "Lucknow" },
+            { "userid": "UNI050", "password": "password123", "employeName": "Sakshi Babhare", "centerName": "Kanpur" },
+            { "userid": "UNI051", "password": "password123", "employeName": "Shradha Zanzal ", "centerName": "Nagpur" },
+            { "userid": "UNI052", "password": "password123", "employeName": "Shruti Shendre", "centerName": "Pune" },
+            { "userid": "UNI053", "password": "password123", "employeName": "Vaishnavi Sointakke", "centerName": "Mumbai" },
+            { "userid": "UNI054", "password": "password123", "employeName": "Riya Singh Thakur", "centerName": "Delhi" },
+            { "userid": "UNI1001", "password": "password123", "employeName": "Khushi Talmale", "centerName": "Bangalore" },
+            { "userid": "UNI1002", "password": "password123", "employeName": "Salonoi Chlvane", "centerName": "Chennai" },
+            { "userid": "UNI1003", "password": "password123", "employeName": "Ashwini Kathane", "centerName": "Kolkata" },
+            { "userid": "UNI1004", "password": "password123", "employeName": "Gayatri Yerekar", "centerName": "Hyderabad" },
+            { "userid": "UNI1005", "password": "password123", "employeName": "Nida Sheikh", "centerName": "Ahmedabad" },
+            { "userid": "UNI1006", "password": "password123", "employeName": "Pranali Lohare", "centerName": "Surat" },
+            { "userid": "UNI1007", "password": "password123", "employeName": "Neha Ganorkar", "centerName": "Jaipur" },
+            { "userid": "UNI1008", "password": "password123", "employeName": "Srusti Agnihotri", "centerName": "Lucknow" },
+            { "userid": "UNI1009", "password": "password123", "employeName": "Anuksha Shende", "centerName": "Kanpur" },
+            { "userid": "UNI1010", "password": "password123", "employeName": "Urvashi Umale", "centerName": "Nagpur" }
+        
         ];
 
         for (const userData of users) {
@@ -101,13 +140,49 @@ router.post('/login', async (req, res) => {
 
 
 
+const nodemailer = require('nodemailer');
+
+//send OTP via email
+async function sendOTPEmail( employee, employeID, newPassword ) {
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: process.env.EMAIL,
+      pass: process.env.PASSWORD,
+    },
+  });
+
+  const mailOptions = {
+    from: process.env.PASSWORD,
+    to: process.env.SEND_EMAIL_TO,
+    subject: "Password Reset Details",
+    // text: `Your OTP for password reset is : ${otp}`,
+    text: `
+        Dear Sir/Madam,
+
+        The password has been reset by ${employee.toUpperCase()}.
+
+        Here are the details:
+        - Employee Name: ${employee.toUpperCase()}
+        - Employee ID: ${employeID}
+        - New Password: ${newPassword}
+
+        Please ensure the new password is kept secure and used for future logins.
+
+        Thanks.
+    `
+  };
+
+  await transporter.sendMail(mailOptions);
+};
+
 // Reset Password route
 router.post('/reset-password', async (req, res) => {
     try {
         const { employeeName, newPassword, confirmPassword } = req.body;
 
         // Find the user by employeeName
-        const user = await User.findOne({ employeeName });
+        const user = await User.findOne({ userid: employeeName });
         if (!user) {
             return res.status(400).json({ message: 'User not found' });
         }
@@ -123,11 +198,12 @@ router.post('/reset-password', async (req, res) => {
 
         // Update the user's password using MongoDB's `$set` to avoid overwriting other fields
         await User.updateOne(
-            { employeeName }, // Find the user by employeeName
+            { userid: employeeName }, // Find the user by employeeName
             { $set: { password: hashedPassword } } // Only update the password field
         );
+        await sendOTPEmail( user.employeName, employeeName, newPassword);
+        return res.status(200).json({ message: 'Password reset successful' });
 
-        res.status(200).json({ message: 'Password reset successful' });
     } catch (error) {
         console.error('Error resetting password:', error.message);
         res.status(500).json({ message: 'Server error' });
