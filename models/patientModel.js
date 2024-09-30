@@ -69,6 +69,7 @@ const patientSchema = new mongoose.Schema({
   isUnderBloodTransfusion: { type: Boolean, required: true },
   familyHistory: { type: Boolean, required: true },
   UID: { type: String },
+  isDeleted: { type: String, default: false },
 },
 { timestamps: true },
 );
