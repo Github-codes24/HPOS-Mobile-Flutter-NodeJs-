@@ -5,7 +5,7 @@ const cervicalpatientSchema = new mongoose.Schema({
   // abhaNumber: { type: String, required: true, unique: true },
   // aadhaarNumber: { type: String, required: true, unique: true },
   personalName: { type: String, required: true },
-  centerCode: { type: String , default: "Center Code"},
+  centerCode: { type: String },
   bloodStatus: { type: String , default: "Pending"},
   resultStatus: { type: String , default: "Pending"},
   HPLC: { type: String , default: "Pending"},

@@ -41,7 +41,7 @@ const patientSchema = new mongoose.Schema({
   // aadhaarNumber: { type: String, required: true, unique: true },
   userImage: String,
   personalName: { type: String, required: true },
-  centerCode: { type: String , default: "Center Code"},
+  centerCode: { type: String },
   bloodStatus: { type: String , default: "Pending"},
   resultStatus: { type: String , default: "Pending"},
   HPLC: { type: String , default: "Pending"},
