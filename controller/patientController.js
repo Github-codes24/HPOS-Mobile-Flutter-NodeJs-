@@ -113,16 +113,13 @@ const createPatient = async (req, res) => {
     userImageFile
   ]);
 
-  const generateRandomCenterCode = () => {
-    return Math.floor(10000 + Math.random() * 90000); // Generates a random number between 10000 and 99999
-  };
 
   const newPatient = new Patient({
     // personalName,
     // abhaNumber,
     // aadhaarNumber,
     personalName, aadhaarNumber, number,
-    centerCode: generateRandomCenterCode(),
+    centerCode,
     userImage: userImageFile?.secure_url,
     birthYear,
     gender,

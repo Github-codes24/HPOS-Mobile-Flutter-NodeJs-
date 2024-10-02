@@ -34,6 +34,7 @@ const cervicalpatientRoutes = require("./routes/cervicalpatientRoutes");
 // const userRoutes = require("./routes/userRoutes");
 const authRoutes = require('./routes/auth');
 const sightDetailRoutes = require('./routes/sightDetailRoutes');
+const centerCodeRoutes = require("./routes/centerCodeRoutes");
 
 // Use routes
 app.use("/api/sickleCellPatients", patientRoutes);
@@ -42,6 +43,7 @@ app.use("/api/breastdata", breastdataRoutes);
 app.use("/api/breastpatients", breastpatientRoutes);
 app.use("/api/cervicaldata", cervicaldataRoutes);
 app.use("/api/cervicalpatients", cervicalpatientRoutes);
+app.use("/api/centerCode", centerCodeRoutes);
 // app.use("/api/user", userRoutes);
 app.use("/api/auth", authRoutes);           // Route for authentication
 app.use("/api", sightDetailRoutes);         // Route for sight details
