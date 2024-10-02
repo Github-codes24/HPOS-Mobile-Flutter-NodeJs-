@@ -43,6 +43,7 @@ const createPatient = async (req, res) => {
     isUnderMedication,
     isUnderBloodTransfusion,
     familyHistory,
+    UID: aadhaarNumber.slice(0, 12) + personalName.slice(0, 3).toUpperCase() + centerName.slice(0, 3).toUpperCase()
   });
 
   try {

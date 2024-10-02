@@ -32,10 +32,11 @@ const cervicalpatientSchema = new mongoose.Schema({
   isUnderMedication: { type: Boolean, required: true },
   isUnderBloodTransfusion: { type: Boolean, required: true },
   familyHistory: { type: Boolean, required: true },
+  UID: { type: String },
   isDeleted: { type: String, default: false },
 },
 { timestamps: true },
 );
 
-const Patient = mongoose.model(" cervicalpatient", cervicalpatientSchema);
+const Patient = mongoose.model("cervicalpatient", cervicalpatientSchema);
 module.exports = Patient;
