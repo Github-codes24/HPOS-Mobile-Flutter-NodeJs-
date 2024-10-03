@@ -111,7 +111,25 @@ const createPatient = async (req, res) => {
     let userImageFile;
     if (userImage) {
       userImageFile = await cloudinary(userImage[0].buffer);
-    }
+    };
+
+    // Function to calculate age from birthYear
+    const calculateAge = (birthDateString) => {
+      const birthDate = new Date(birthDateString.split("-").reverse().join("-")); // Converting dd-mm-yyyy to yyyy-mm-dd
+      const today = new Date();
+      let age = today.getFullYear() - birthDate.getFullYear();
+      const monthDifference = today.getMonth() - birthDate.getMonth();
+
+      // If birth month is after today's month or it's the same month but birth day is after today, subtract one year from age
+      if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < birthDate.getDate())) {
+        age--;
+      }
+
+      return age;
+    };
+
+    // Calculate age from birthYear
+    const age = calculateAge(birthYear);
 
     // Reusable UID generation logic
     const UID = aadhaarNumber.slice(0, 12) + personalName.slice(0, 3).toUpperCase() + centerName.slice(0, 3).toUpperCase();
@@ -124,6 +142,7 @@ const createPatient = async (req, res) => {
       centerCode,
       userImage: userImageFile?.secure_url,
       birthYear,
+      age,
       gender,
       mobileNumber,
       fathersName,
