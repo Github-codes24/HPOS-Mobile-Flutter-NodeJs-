@@ -1,7 +1,7 @@
 const express = require("express");
 const {
   createPatient,
-  getAllPatients, createPatientForAllDisease,
+  getAllPatients,
 } = require("../controller/patientController");
 const router = express.Router();
 const multer = require('multer');
@@ -13,9 +13,6 @@ router.post("/", upload.fields([
   { name: 'userImage', maxCount: 1 },
 ]), createPatient);
 
-router.post("/createUserForAll", upload.fields([
-  { name: 'userImage', maxCount: 1 },
-]), createPatientForAllDisease);
 
 router.get("/", getAllPatients);
 

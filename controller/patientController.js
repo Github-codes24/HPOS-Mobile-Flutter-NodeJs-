@@ -82,122 +82,41 @@ const cloudinary = require('../config/cloudinary');
 
 // POST: Create new patient record
 const createPatient = async (req, res) => {
-  const {
-    // personalName,
-    // abhaNumber,
-    // aadhaarNumber,
-    personalName, aadhaarNumber, number,
-    birthYear,
-    gender,
-    mobileNumber,
-    fathersName,
-    motherName, // New field added
-    maritalStatus,
-    category,
-    caste,
-    subCaste,
-    address,
-    centerName,
-    isUnderMedication,
-    isUnderBloodTransfusion,
-    familyHistory,
-  } = req.body;
-
-  const { userImage } = req.files;
-
-  let userImageFile;
-        
-  if (userImage) {
-    userImageFile = await cloudinary(userImage[0].buffer);
-  };
-
-  await Promise.allSettled([
-    userImageFile
-  ]);
-
-
-  const newPatient = new Patient({
-    // personalName,
-    // abhaNumber,
-    // aadhaarNumber,
-    personalName, aadhaarNumber, number,
-    centerCode,
-    userImage: userImageFile?.secure_url,
-    birthYear,
-    gender,
-    mobileNumber,
-    fathersName,
-    motherName, // New field added
-    maritalStatus,
-    category,
-    caste,
-    subCaste,
-    address,
-    centerName,
-    isUnderMedication,
-    isUnderBloodTransfusion,
-    familyHistory,
-    UID: aadhaarNumber.slice(0, 12) + personalName.slice(0, 3).toUpperCase() + centerName.slice(0, 3).toUpperCase()
-  });
-
-  try {
-    await newPatient.save();
-    res
-      .status(201)
-      .json({ message: "Patient record saved successfully", data: newPatient });
-  } catch (error) {
-    res.status(500).json({ message: "Error saving patient record", error });
-  }
-};
-
-// GET: Retrieve all patient records
-const getAllPatients = async (req, res) => {
-  try {
-    const allPatients = await Patient.find();
-    res.json(allPatients);
-  } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Error retrieving patient records", error });
-  }
-};
-
-
-const createPatientForAllDisease = async (req, res) => {
   try {
     const {
       personalName,
       aadhaarNumber,
       number,
+      disease,
       birthYear,
       gender,
       mobileNumber,
       fathersName,
-      motherName,
+      motherName, // New field added
       maritalStatus,
       category,
-      centerCode,
       caste,
       subCaste,
       address,
       centerName,
+      centerCode,
       isUnderMedication,
       isUnderBloodTransfusion,
       familyHistory,
     } = req.body;
 
-    // Handle image upload using cloudinary
     const { userImage } = req.files;
+    
+    // Upload the image to cloudinary if provided
     let userImageFile;
-          
     if (userImage) {
       userImageFile = await cloudinary(userImage[0].buffer);
     }
 
-    // Construct the UID (Make sure aadhaarNumber is at least 12 characters long)
+    // Reusable UID generation logic
     const UID = aadhaarNumber.slice(0, 12) + personalName.slice(0, 3).toUpperCase() + centerName.slice(0, 3).toUpperCase();
 
-    // Create Patient, BPatient, and CPatient objects
+    // Define patient data that can be used across different conditions
     const patientData = {
       personalName,
       aadhaarNumber,
@@ -221,29 +140,71 @@ const createPatientForAllDisease = async (req, res) => {
       UID
     };
 
-    const newPatient = new Patient(patientData);
-    const newBPatient = new BPatient(patientData);
-    const newCPatient = new CPatient(patientData);
+    // Create patient based on the disease type
+    let newPatient;
+    
+    if (disease === "sickleCell") {
+      newPatient = new Patient(patientData);
+    } else if (disease === "breastCancer") {
+      newPatient = new BPatient(patientData);
+    } else if (disease === "cervicalCancer") {
+      newPatient = new CPatient(patientData);
+    } else if (disease === "All") {
+      // Save to all collections for 'All' disease
+      const newPatient = new Patient(patientData);
+      const newBPatient = new BPatient(patientData);
+      const newCPatient = new CPatient(patientData);
+      
+      await newPatient.save();
+      await newBPatient.save();
+      await newCPatient.save();
 
-    // Save all patients to the database
-    await newPatient.save();
-    await newBPatient.save();
-    await newCPatient.save();
+      return res.status(201).json({
+        message: "Patient record saved successfully",
+        data: { newPatient, newBPatient, newCPatient }
+      });
+    }
 
-    res.status(201).json({
-      message: "Patient record saved successfully",
-      data: { newPatient, newBPatient, newCPatient },
+    if (newPatient) {
+      await newPatient.save();
+      return res.status(201).json({
+        message: "Patient record saved successfully",
+        data: newPatient
+      });
+    }
+
+    res.status(400).json({
+      message: "Invalid disease type provided"
     });
 
   } catch (error) {
-    // Catch any errors and send the appropriate response
     res.status(500).json({
-      message: "Error saving patient records",
+      message: "Error saving patient record",
       error: error.message,
     });
   }
 };
 
+// Sample function to generate random 5-digit center code if required
+const generateCenterCode = () => {
+  return Math.floor(10000 + Math.random() * 90000).toString();
+};
 
 
-module.exports = { createPatient, getAllPatients, createPatientForAllDisease };
+// GET: Retrieve all patient records
+const getAllPatients = async (req, res) => {
+  try {
+    const allPatients = await Patient.find();
+    res.json(allPatients);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error retrieving patient records", error });
+  }
+};
+
+
+
+
+
+module.exports = { createPatient, getAllPatients };
