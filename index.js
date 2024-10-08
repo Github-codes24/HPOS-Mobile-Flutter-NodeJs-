@@ -35,6 +35,7 @@ const cervicalpatientRoutes = require("./routes/cervicalpatientRoutes");
 const authRoutes = require('./routes/auth');
 const sightDetailRoutes = require('./routes/sightDetailRoutes');
 const centerCodeRoutes = require("./routes/centerCodeRoutes");
+const casteAndCategoryRoutes = require("./routes/casteAndCategoryRoutes");
 
 // Use routes
 app.use("/api/patient", patientRoutes);
@@ -44,6 +45,7 @@ app.use("/api/breastpatients", breastpatientRoutes);
 app.use("/api/cervicaldata", cervicaldataRoutes);
 app.use("/api/cervicalpatients", cervicalpatientRoutes);
 app.use("/api/centerCode", centerCodeRoutes);
+app.use("/api/casteAndCategory", casteAndCategoryRoutes);
 // app.use("/api/user", userRoutes);
 app.use("/api/auth", authRoutes);           // Route for authentication
 app.use("/api", sightDetailRoutes);         // Route for sight details

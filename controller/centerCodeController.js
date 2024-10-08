@@ -1,5 +1,17 @@
 const centerCodeModel = require("../models/centerCodeModel");
 
+const getCenterName = async (req, res) => {
+    try {
+        const centerNameList = await centerCodeModel.find().select({ centerName: 1, _id: 0 });
+        return res.status(200).json({ status: true, centerNameList: centerNameList });
+    } catch (error) {
+        return res.status(500).json({
+        message: "Error updating patient data",
+        error: error.message,
+        });
+    }
+};
+
 const getCenterCode = async (req, res) => {
     try {
         const {centerName} = req.body;
@@ -24,4 +36,4 @@ const getCenterCode = async (req, res) => {
   }
 };
 
-module.exports = {getCenterCode};
+module.exports = {getCenterCode, getCenterName};
