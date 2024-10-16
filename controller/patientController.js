@@ -213,7 +213,8 @@ const generateCenterCode = () => {
 // GET: Retrieve all patient records
 const getAllPatients = async (req, res) => {
   try {
-    const allPatients = await Patient.find();
+    const {centerName} = req.query;
+    const allPatients = await Patient.find(req.query);
     res.json(allPatients);
   } catch (error) {
     res

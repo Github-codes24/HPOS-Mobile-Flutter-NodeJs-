@@ -25,7 +25,8 @@ const SightDetailSchema = new mongoose.Schema({
     centerName: {
         type: String,
         required: true
-    }
+    },
+    employeesName: { type: String}
 });
 
 module.exports = mongoose.model('SightDetail', SightDetailSchema);
