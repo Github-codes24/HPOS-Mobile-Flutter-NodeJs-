@@ -81,7 +81,7 @@ const CPatient = require("../models/cervicalpatientModel");
 const cloudinary = require('../config/cloudinary');
 
 // POST: Create new patient record
-const createPatient = async (req, res) => {
+const createPatientForMany = async (req, res) => {
   try {
     const {
       personalName,
@@ -103,9 +103,18 @@ const createPatient = async (req, res) => {
       isUnderMedication,
       isUnderBloodTransfusion,
       familyHistory,
+      symptoms,
+      perCapitaIncome,
+      ageAtMarried,
+      literacyRate,
+      parity,
+      menoPauseStatus,
+      ageOfFirstChild,
+      vaccinationStatus
     } = req.body;
+    const parsedData = JSON.parse(menoPauseStatus)
 
-    const { userImage } = req.files;
+    const userImage = req.files?.userImage;
     
     // Upload the image to cloudinary if provided
     let userImageFile;
@@ -159,43 +168,46 @@ const createPatient = async (req, res) => {
       UID
     };
 
-    // Create patient based on the disease type
-    let newPatient;
+    const savedRecords = [];
+
+    if (disease.includes("sickleCell")) {
+      const newSPatient = new Patient(patientData);
+      await newSPatient.save();
+      savedRecords.push({ disease: "sickleCell", record: newSPatient });
+    };
     
-    if (disease === "sickleCell") {
-      newPatient = new Patient(patientData);
-    } else if (disease === "breastCancer") {
-      newPatient = new BPatient(patientData);
-    } else if (disease === "cervicalCancer") {
-      newPatient = new CPatient(patientData);
-    } else if (disease === "All") {
-      // Save to all collections for 'All' disease
-      const newPatient = new Patient(patientData);
+    if (disease.includes("breastCancer")) {
       const newBPatient = new BPatient(patientData);
-      const newCPatient = new CPatient(patientData);
-      
-      await newPatient.save();
       await newBPatient.save();
+      savedRecords.push({ disease: "breastCancer", record: newBPatient });
+    };
+
+    if (disease.includes("cervicalCancer")) {
+      patientData.symptoms = symptoms;
+      patientData.ageAtMarried = ageAtMarried;
+      patientData.perCapitaIncome = perCapitaIncome;
+      patientData.literacyRate = literacyRate;
+      patientData.parity = parity;
+      patientData.menoPauseStatus = {
+        LMP: parsedData.LMP,
+        havingMenopause: parsedData.havingMenopause,
+      };
+      patientData.ageOfFirstChild = ageOfFirstChild
+      patientData.vaccinationStatus = vaccinationStatus
+      
+      const newCPatient = new CPatient(patientData);
       await newCPatient.save();
+      savedRecords.push({ disease: "cervicalCancer", record: newCPatient });
+    };
 
-      return res.status(201).json({
-        message: "Patient record saved successfully",
-        data: { newPatient, newBPatient, newCPatient }
-      });
+    if (savedRecords.length === 0) {
+      return res.status(400).json({ message: "No diseases selected" });
     }
 
-    if (newPatient) {
-      await newPatient.save();
-      return res.status(201).json({
-        message: "Patient record saved successfully",
-        data: newPatient
-      });
-    }
-
-    res.status(400).json({
-      message: "Invalid disease type provided"
+    return res.status(201).json({
+      message: "Patient record(s) saved successfully",
+      data: savedRecords,
     });
-
   } catch (error) {
     res.status(500).json({
       message: "Error saving patient record",
@@ -224,7 +236,4 @@ const getAllPatients = async (req, res) => {
 };
 
 
-
-
-
-module.exports = { createPatient, getAllPatients };
+module.exports = { createPatientForMany, getAllPatients };
