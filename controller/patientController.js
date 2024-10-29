@@ -168,21 +168,45 @@ const createPatientForMany = async (req, res) => {
       UID
     };
 
-    const savedRecords = [];
+    // const savedRecords = [];
 
-    if (disease.includes("sickleCell")) {
-      const newSPatient = new Patient(patientData);
-      await newSPatient.save();
-      savedRecords.push({ disease: "sickleCell", record: newSPatient });
-    };
+    // if (disease.includes("sickleCell")) {
+    //   const newSPatient = new Patient(patientData);
+    //   await newSPatient.save();
+    //   savedRecords.push({ disease: "sickleCell", record: newSPatient });
+    // };
     
-    if (disease.includes("breastCancer")) {
-      const newBPatient = new BPatient(patientData);
-      await newBPatient.save();
-      savedRecords.push({ disease: "breastCancer", record: newBPatient });
-    };
+    // if (disease.includes("breastCancer")) {
+    //   const newBPatient = new BPatient(patientData);
+    //   await newBPatient.save();
+    //   savedRecords.push({ disease: "breastCancer", record: newBPatient });
+    // };
 
-    if (disease.includes("cervicalCancer")) {
+    // if (disease.includes("cervicalCancer")) {
+    //   patientData.symptoms = symptoms;
+    //   patientData.ageAtMarried = ageAtMarried;
+    //   patientData.perCapitaIncome = perCapitaIncome;
+    //   patientData.literacyRate = literacyRate;
+    //   patientData.parity = parity;
+    //   patientData.menoPauseStatus = {
+    //     LMP: parsedData.LMP,
+    //     havingMenopause: parsedData.havingMenopause,
+    //   };
+    //   patientData.ageOfFirstChild = ageOfFirstChild
+    //   patientData.vaccinationStatus = vaccinationStatus
+      
+    //   const newCPatient = new CPatient(patientData);
+    //   await newCPatient.save();
+    //   savedRecords.push({ disease: "cervicalCancer", record: newCPatient });
+    // };
+
+    let newPatient;
+    
+    if (disease === "sickleCell") {
+      newPatient = new Patient(patientData);
+    } else if (disease === "breastCancer") {
+      newPatient = new BPatient(patientData);
+    } else if (disease === "cervicalCancer") {
       patientData.symptoms = symptoms;
       patientData.ageAtMarried = ageAtMarried;
       patientData.perCapitaIncome = perCapitaIncome;
@@ -194,20 +218,39 @@ const createPatientForMany = async (req, res) => {
       };
       patientData.ageOfFirstChild = ageOfFirstChild
       patientData.vaccinationStatus = vaccinationStatus
-      
+      newPatient = new CPatient(patientData);
+    } else if (disease === "All") {
+      // Save to all collections for 'All' disease
+      const newPatient = new Patient(patientData);
+      const newBPatient = new BPatient(patientData);
+      patientData.symptoms = symptoms;
+      patientData.ageAtMarried = ageAtMarried;
+      patientData.perCapitaIncome = perCapitaIncome;
+      patientData.literacyRate = literacyRate;
+      patientData.parity = parity;
+      patientData.menoPauseStatus = {
+        LMP: parsedData.LMP,
+        havingMenopause: parsedData.havingMenopause,
+      };
+      patientData.ageOfFirstChild = ageOfFirstChild
+      patientData.vaccinationStatus = vaccinationStatus
       const newCPatient = new CPatient(patientData);
+      
+      await newPatient.save();
+      await newBPatient.save();
       await newCPatient.save();
-      savedRecords.push({ disease: "cervicalCancer", record: newCPatient });
-    };
-
-    if (savedRecords.length === 0) {
-      return res.status(400).json({ message: "No diseases selected" });
+      return res.status(201).json({
+        message: "Patient record saved successfully",
+        data: { newPatient, newBPatient, newCPatient }
+      });
     }
-
-    return res.status(201).json({
-      message: "Patient record(s) saved successfully",
-      data: savedRecords,
-    });
+    if (newPatient) {
+      await newPatient.save();
+      return res.status(201).json({
+        message: "Patient record saved successfully",
+        data: newPatient
+      });
+    }
   } catch (error) {
     res.status(500).json({
       message: "Error saving patient record",
