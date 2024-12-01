@@ -41,7 +41,7 @@ const cervicalpatientSchema = new mongoose.Schema({
   parity: { type: String },
   menoPauseStatus: {
     LMP: { type: String },
-    havingMenopause: { type: Number },
+    havingMenopause: { type: String },
   },
   ageOfFirstChild: { type: Number },
   vaccinationStatus: { type: String },
