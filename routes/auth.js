@@ -116,7 +116,7 @@ router.post('/login', async (req, res) => {
 
         // Include employeeName and the provided disease in the token payload
         const token = jwt.sign(
-            { userid: user.userid, employeeName: user.employeName, disease }, // Adding the provided disease to token payload
+            { userid: user.userid, employeeName: user.employeName }, // Adding the provided disease to token payload
             process.env.JWT_SECRET,
             { expiresIn: '1d' }
         );
@@ -128,10 +128,10 @@ router.post('/login', async (req, res) => {
             employeName: user.employeeName,
         };
 
-        res.status(200).json({ message: 'Login successful', token, userDetails });
+        return res.status(200).json({ message: 'Login successful', token, userDetails });
     } catch (error) {
         console.error('Error during login:', error.message);
-        res.status(500).json({ message: 'Server error' });
+        return res.status(500).json({ message: 'Server error' });
     }
 });
 
