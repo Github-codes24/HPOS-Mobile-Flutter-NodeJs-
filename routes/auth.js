@@ -94,11 +94,11 @@ seedDatabase();
 
 // Login route
 router.post('/login', async (req, res) => {
-    const { userid, password, disease } = req.body;
+    const { userid, password } = req.body;
 
     // Check if required fields are present
-    if (!userid || !password || !disease) {
-        return res.status(400).json({ message: 'Userid, password, and disease are required' });
+    if (!userid || !password) {
+        return res.status(400).json({ message: 'Userid, password are required' });
     }
 
     try {
@@ -126,7 +126,6 @@ router.post('/login', async (req, res) => {
             employeeName: user.employeeName,
             centerName: user.centerName,
             employeName: user.employeeName,
-            disease: disease, // the provided disease
         };
 
         res.status(200).json({ message: 'Login successful', token, userDetails });
