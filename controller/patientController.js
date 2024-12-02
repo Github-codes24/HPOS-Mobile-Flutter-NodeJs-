@@ -118,8 +118,10 @@ const createPatientForMany = async (req, res) => {
       ageOfFirstChild,
       vaccinationStatus
     } = req.body;
-    console.log(req.body.isUnderMedicationForCervical)
-    const parsedData = JSON.parse(menoPauseStatus)
+    let parsedData;
+    if ( menoPauseStatus ) {
+      parsedData = JSON.parse(menoPauseStatus)
+    }
 
     const userImage = req.files?.userImage;
     
