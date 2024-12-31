@@ -287,6 +287,38 @@ const generateCenterCode = () => {
   return Math.floor(10000 + Math.random() * 90000).toString();
 };
 
+// GET: Retrieve a patient record by ID
+const getPatientById = async (req, res) => {
+  try {
+    const { id } = req.params; // Extract ID from the request parameters
+
+    // Find the patient by ID
+    const patient = await Patient.findById(id);
+
+    // If no patient is found, return a 404 response
+    if (!patient) {
+      return res.status(404).json({ 
+        success: false, 
+        message: "Patient not found" 
+      });
+    }
+
+    // Return the patient's record
+    res.status(200).json({ 
+      success: true, 
+      patient 
+    });
+  } catch (error) {
+    console.error("Error retrieving patient record:", error);
+    res.status(500).json({ 
+      success: false, 
+      message: "Error retrieving patient record", 
+      error: error.message 
+    });
+  }
+};
+
+
 
 // GET: Retrieve all patient records
 const getAllPatients = async (req, res) => {
@@ -302,4 +334,4 @@ const getAllPatients = async (req, res) => {
 };
 
 
-module.exports = { createPatientForMany, getAllPatients };
+module.exports = { createPatientForMany, getAllPatients, getPatientById };
