@@ -37,6 +37,9 @@ const sightDetailRoutes = require('./routes/sightDetailRoutes');
 const centerCodeRoutes = require("./routes/centerCodeRoutes");
 const casteAndCategoryRoutes = require("./routes/casteAndCategoryRoutes");
 
+app.get("/", (req, res) => {
+  res.send("Welcome to hpos ");
+});
 // Use routes
 app.use("/api/patient", patientRoutes);
 app.use("/api/data", dataRoutes);
