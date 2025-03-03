@@ -36,9 +36,6 @@
 const mongoose = require("mongoose");
 
 const patientSchema = new mongoose.Schema({
-  // personalName: { type: String, required: true },
-  // abhaNumber: { type: String, required: true, unique: true },
-  // aadhaarNumber: { type: String, required: true, unique: true },
   userImage: String,
   personalName: { type: String, required: true },
   centerCode: { type: String },
@@ -47,7 +44,7 @@ const patientSchema = new mongoose.Schema({
   HPLC: { type: String , default: "Pending"},
   cardStatus: { type: String , default: "Pending"},
   aadhaarNumber: { type: String, required: true, unique: true }, // Assuming Aadhaar number is unique
-  number: { type: Number, required: true },
+  number: { type: Number},
   birthYear: { type: String, required: true },
   age: { type: String },
   gender: { type: String, enum: ["Male", "Female", "Other"], required: true },
@@ -55,8 +52,8 @@ const patientSchema = new mongoose.Schema({
   fathersName: { type: String, required: true },
   motherName: { type: String }, // New field added
   maritalStatus: { type: String, required: true },
-  category: { type: String, required: true },
-  caste: { type: String, required: true },
+  category: { type: String},
+  caste: { type: String},
   subCaste: { type: String },
   address: {
     house: { type: String, required: true },
@@ -64,6 +61,7 @@ const patientSchema = new mongoose.Schema({
     district: { type: String, required: true },
     state: { type: String, required: true },
     pincode: { type: String, required: true, match: /^[0-9]{6}$/ },
+    landmark : {type :String, required : true}
   },
   centerName: { type: String, required: true },
   isUnderMedicationForSickle: { type: Boolean },
